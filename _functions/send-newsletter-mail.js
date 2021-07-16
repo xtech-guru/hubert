@@ -16,31 +16,30 @@ exports.handler = async function (event) {
     }
   }
 
-  const { from } = JSON.parse(event.body || "{}")
+  const { email } = JSON.parse(event.body || "{}")
 
-  if (!isValidEmail(from)) {
+  if (!isValidEmail(email)) {
     return {
       statusCode: 400,
     }
   }
 
-  const message = {
-    From: { Email: from },
-    To: [
-      {
-        Email: "fekhergh93@gmail.com",
-      },
-    ],
-    Subject: "Newsletter request",
-  }
-
   try {
-    const request = await mailjet.post("send", { version: "v3.1" }).request({
-      Messages: [message],
+    const request = await mailjet.post("contact").request({
+      Email: email,
     })
 
     console.log(request.body)
-  } catch (err) {
-    console.log(err.statusCode)
+
+    return {
+      statusCode: request.response.status,
+      body: JSON.stringify(request.body),
+    }
+  } catch ({ statusCode }) {
+    console.log(statusCode)
+
+    return {
+      statusCode,
+    }
   }
 }
