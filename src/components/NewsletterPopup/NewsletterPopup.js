@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
+import axios from "axios"
 
 const POPUP_VISIBLE_LOCAL_STORAGE_KEY = "newsletter_popup_visible"
 
 export function NewsletterPopup() {
+  const [email, setEmail] = useState("")
   const [isClosed, setClosed] = useState(true)
 
   const [isCollapsed, setCollapsed] = useState(false)
@@ -15,6 +17,24 @@ export function NewsletterPopup() {
   const closePopup = useCallback(() => {
     setClosed(true)
     localStorage.setItem(POPUP_VISIBLE_LOCAL_STORAGE_KEY, "false")
+  }, [])
+
+  const onSubmit = useCallback(
+    async event => {
+      event.preventDefault()
+      try {
+        const response = await axios.post(
+          "/.netlify/functions/send-newsletter-mail",
+          { email }
+        )
+        console.log(response)
+      } catch (e) {}
+    },
+    [email]
+  )
+
+  const onEmailChange = useCallback(event => {
+    setEmail(event.target.value)
   }, [])
 
   useEffect(() => {
@@ -69,10 +89,9 @@ export function NewsletterPopup() {
               </div>
 
               <form
-                method="post"
-                action=""
                 id="mailjetSubscriptionForm"
                 name="wp_mailjet_subscribe_widget-2"
+                onSubmit={onSubmit}
               >
                 <div>
                   <input
@@ -81,6 +100,8 @@ export function NewsletterPopup() {
                     id="mailjet_widget_email"
                     required="required"
                     placeholder="* your@email.com"
+                    value={email}
+                    onChange={onEmailChange}
                   />
                   <input
                     type="hidden"
