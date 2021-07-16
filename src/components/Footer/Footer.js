@@ -4,8 +4,6 @@ import { Link } from "gatsby"
 
 import * as styles from "./Footer.module.scss"
 
-import { NewsletterPopup } from "../NewsletterPopup"
-
 export function Footer() {
   //TODO: externalize the value to another place more suitable for data
   return (
