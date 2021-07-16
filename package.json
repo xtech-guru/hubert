@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "@contentful/rich-text-from-markdown": "^14.1.2",
+    "@contentful/rich-text-react-renderer": "^14.1.2",
     "axios": "^0.21.1",
     "bootstrap": "4.0.0-alpha.6",
     "contentful-management": "^7.17.6",
