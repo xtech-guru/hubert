@@ -71,7 +71,9 @@ export function NewsletterPopup() {
         POPUP_VISIBLE_LOCAL_STORAGE_KEY
       )
 
-      setClosed(Boolean(shouldPopupBeVisible))
+      if (shouldPopupBeVisible === "true") {
+        setClosed(false)
+      }
     }, 5000)
   }, [])
 
