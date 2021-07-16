@@ -1,10 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState, useRef } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
 const POPUP_VISIBLE_LOCAL_STORAGE_KEY = "newsletter_popup_visible"
+const CREATE_NEWSLETTER_CONTACT_ENDPOINT =
+  "/.netlify/functions/create-newsletter-contact"
+
+const NewsletterSubscriptionStatus = {
+  default: "DEFAULT",
+  success: "SUCCESS",
+  fail: "FAIL",
+}
 
 export function NewsletterPopup() {
+  const isMounted = useRef(null)
+
+  const [subscriptionStatus, setSubscriptionStatus] = useState(
+    NewsletterSubscriptionStatus.default
+  )
   const [email, setEmail] = useState("")
   const [isClosed, setClosed] = useState(true)
 
@@ -23,18 +36,33 @@ export function NewsletterPopup() {
     async event => {
       event.preventDefault()
       try {
-        const response = await axios.post(
-          "/.netlify/functions/send-newsletter-mail",
-          { email }
-        )
-        console.log(response)
-      } catch (e) {}
+        const response = await axios.post(CREATE_NEWSLETTER_CONTACT_ENDPOINT, {
+          email,
+        })
+
+        if (response.status === 201) {
+          setEmail("")
+          return setSubscriptionStatus(NewsletterSubscriptionStatus.success)
+        }
+
+        throw new Error()
+      } catch (e) {
+        setSubscriptionStatus(NewsletterSubscriptionStatus.fail)
+      }
     },
     [email]
   )
 
   const onEmailChange = useCallback(event => {
     setEmail(event.target.value)
+  }, [])
+
+  useEffect(() => {
+    isMounted.current = true
+
+    return () => {
+      isMounted.current = false
+    }
   }, [])
 
   useEffect(() => {
@@ -122,7 +150,10 @@ export function NewsletterPopup() {
                 />
                 <input type="submit" value="to register" />
               </form>
-              <span />
+              <span>
+                {subscriptionStatus === NewsletterSubscriptionStatus.success &&
+                  "E-Mail zur Bestätigung des Abonnements gesendet. Bitte überprüfen Sie Ihren Posteingang und bestätigen Sie Ihr Abonnement."}
+              </span>
             </div>
           </div>
         </div>
@@ -364,7 +395,7 @@ const NewLetterPopupContent = styled.div`
             touch-action: manipulation;
           }
 
-          > input:last-child {
+          & input:last-child {
             margin: 5px 0;
             align-self: flex-start;
             padding: 10px;
