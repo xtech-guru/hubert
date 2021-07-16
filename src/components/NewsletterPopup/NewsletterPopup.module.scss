@@ -2,8 +2,13 @@
   width: 100%;
   position: fixed;
   background-color: #fff;
+  bottom: 0;
   transition: all 0.5s linear;
   transition-delay: 0.4s;
+}
+
+.hiddenPopup {
+  bottom: -500px;
 }
 
 .header {
@@ -111,7 +116,19 @@
   transform: rotate(180deg);
 }
 
+.collapsedContent {
+  max-height: 0;
+}
+
+.uncollapsedContent {
+  max-height: 300px;
+}
+
 .content {
+  transition: max-height 1s linear;
+  transition-delay: 0.2s;
+  height: auto;
+  overflow: hidden;
   position: relative;
   margin-left: auto;
   margin-right: auto;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 
 import * as styles from "./NewsletterPopup.module.scss"
@@ -17,9 +17,6 @@ const NewsletterSubscriptionStatus = {
 }
 
 export function NewsletterPopup() {
-  const containerRef = useRef(null)
-  const contentRef = useRef(null)
-
   const [subscriptionStatus, setSubscriptionStatus] = useState(
     NewsletterSubscriptionStatus.default
   )
@@ -28,12 +25,6 @@ export function NewsletterPopup() {
   const [isHidden, setHidden] = useState(true)
   const [isClosed, setClosed] = useState(true)
   const [isCollapsed, setCollapsed] = useState(false)
-
-  const containerHeight = containerRef.current
-    ? containerRef.current.offsetHeight
-    : 0
-
-  const contentHeight = contentRef.current ? contentRef.current.offsetHeight : 0
 
   const toggleCollapse = useCallback(() => {
     setCollapsed(prevState => !prevState)
@@ -102,17 +93,9 @@ export function NewsletterPopup() {
 
   return (
     <div
-      ref={containerRef}
-      className={styles.container}
-      style={{
-        bottom: isHidden
-          ? "-500px"
-          : isClosed
-          ? `-${containerHeight + 10}px`
-          : isCollapsed
-          ? `-${contentHeight}px`
-          : "0",
-      }}
+      className={`${styles.container} ${
+        (isHidden || isClosed) && styles.hiddenPopup
+      }`}
     >
       <div className={styles.header} isCollapsed={isCollapsed}>
         <div>
@@ -146,8 +129,12 @@ export function NewsletterPopup() {
           />
         </span>
       </div>
-      <div className={styles.content}>
-        <div ref={contentRef}>
+      <div
+        className={`${styles.content} ${
+          isCollapsed ? styles.collapsedContent : styles.uncollapsedContent
+        }`}
+      >
+        <div>
           <div>
             <p>
               Du willst regelmäßig die neuesten Hubert-Artikel erhalten? Dann
