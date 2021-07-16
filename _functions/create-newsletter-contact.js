@@ -9,7 +9,10 @@ const headers = {
   "Access-Control-Allow-Methods": "GET, POST, OPTION",
 }
 
-const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// any regex would exclude some valid emails, e.g. those with non latin characters
+// so we just check that there is a '@' in the middle, a vliadation email will
+// be sent anyway
+const emailRegex = /^\S+@\S+$/
 
 function isValidEmail(email) {
   return emailRegex.test(String(email).toLowerCase())
