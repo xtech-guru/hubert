@@ -2,6 +2,10 @@ import React, { useCallback, useEffect, useState, useRef } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
+import iconLetter from "../../images/letter.svg"
+import iconClose from "../../images/close.svg"
+import iconArrowDown from "../../images/arrow-down.svg"
+
 const POPUP_VISIBLE_LOCAL_STORAGE_KEY = "newsletter_popup_visible"
 const CREATE_NEWSLETTER_CONTACT_ENDPOINT =
   "/.netlify/functions/create-newsletter-contact"
@@ -101,10 +105,7 @@ export function NewsletterPopup() {
         <div>
           <div>
             <div>
-              <img
-                src="https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/letter.svg"
-                alt=""
-              />
+              <img src={iconLetter} alt="" />
               <p>NICHTS VERPASSEN!</p>
             </div>
           </div>
@@ -115,10 +116,7 @@ export function NewsletterPopup() {
           onClick={closePopup}
           onKeyPress={onCloseButtonKeyPress}
         >
-          <img
-            src="https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/close.svg"
-            alt=""
-          />
+          <img src={iconClose} alt="" />
         </div>
         <span
           role="button"
@@ -126,10 +124,7 @@ export function NewsletterPopup() {
           onClick={toggleCollapse}
           onKeyPress={onToggleButtonKeyPress}
         >
-          <img
-            src=" https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/arrow-down.svg"
-            alt=""
-          />
+          <img src={iconArrowDown} alt="" />
         </span>
       </NewLetterPopupHeader>
       <NewLetterPopupContent>
