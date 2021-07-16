@@ -338,20 +338,25 @@ const NewLetterPopupContent = styled.div`
 
   > div {
     display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    flex-direction: column;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    @media (min-width: 992px) {
+      flex-direction: row;
+      justify-content: center;
+
+      > div:first-child {
+        max-width: 50%;
+      }
+    }
 
     > div:first-child {
       display: flex;
       align-items: center;
-      margin-left: 8.3333333333%;
-      flex: 0 0 50%;
-      max-width: 50%;
       padding-right: 15px;
       padding-left: 15px;
       position: relative;
-      width: 100%;
       min-height: 1px;
 
       & p {
@@ -368,18 +373,12 @@ const NewLetterPopupContent = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-left: 8.3333333333%;
-      flex: 0 0 33.3333333333%;
-      max-width: 33.3333333333%;
       padding-right: 15px;
       padding-left: 15px;
       position: relative;
-      width: 100%;
       min-height: 1px;
 
       > div {
-        margin-bottom: 20px;
-
         > div {
           display: inline;
           font-size: 12px;
@@ -406,6 +405,7 @@ const NewLetterPopupContent = styled.div`
 
             > input:first-child {
               width: 100%;
+              max-width: 300px;
               border: 1px solid #4c3e30;
               font-size: 16px;
               padding: 6px 15px;
