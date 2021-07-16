@@ -11,8 +11,7 @@ import { useStaticQuery, graphql } from "gatsby"
 
 import { Header } from "../Header"
 import { Footer } from "../Footer"
-import { GlobalStyle } from "../GlobalStyle"
-import { SEO } from "../SEO"
+import { Seo } from "../Seo"
 import { NewsletterPopup } from "../NewsletterPopup"
 
 export const Layout = ({ seo, children }) => {
