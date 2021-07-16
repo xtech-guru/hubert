@@ -89,14 +89,10 @@ export function NewsletterPopup() {
         POPUP_VISIBLE_LOCAL_STORAGE_KEY
       )
 
-      if (shouldPopupBeVisible === "true") {
+      if (shouldPopupBeVisible !== "false") {
         setClosed(false)
       }
     }, 5000)
-
-    return () => {
-      console.log("unmount")
-    }
   }, [])
 
   return (
@@ -282,7 +278,7 @@ const NewLetterPopupHeader = styled.div`
   > div:nth-child(2) {
     display: flex;
     align-items: center;
-
+    outline: none;
     & img {
       width: 16px;
       height: 16px;
@@ -304,6 +300,7 @@ const NewLetterPopupHeader = styled.div`
     padding: 0 5px;
     border-radius: 50%;
     cursor: pointer;
+    outline: none;
 
     & img {
       width: 25px;
