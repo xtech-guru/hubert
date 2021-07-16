@@ -57,6 +57,24 @@ export function NewsletterPopup() {
     setEmail(event.target.value)
   }, [])
 
+  const onCloseButtonKeyPress = useCallback(
+    event => {
+      if (event.key === " ") {
+        closePopup()
+      }
+    },
+    [closePopup]
+  )
+
+  const onToggleButtonKeyPress = useCallback(
+    event => {
+      if (event.key === " ") {
+        toggleCollapse()
+      }
+    },
+    [toggleCollapse]
+  )
+
   useEffect(() => {
     isMounted.current = true
 
@@ -75,6 +93,10 @@ export function NewsletterPopup() {
         setClosed(false)
       }
     }, 5000)
+
+    return () => {
+      console.log("unmount")
+    }
   }, [])
 
   return (
@@ -91,13 +113,23 @@ export function NewsletterPopup() {
             </div>
           </div>
         </div>
-        <div onClick={closePopup}>
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={closePopup}
+          onKeyPress={onCloseButtonKeyPress}
+        >
           <img
             src="https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/close.svg"
             alt=""
           />
         </div>
-        <span onClick={toggleCollapse}>
+        <span
+          role="button"
+          tabIndex={0}
+          onClick={toggleCollapse}
+          onKeyPress={onToggleButtonKeyPress}
+        >
           <img
             src=" https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/arrow-down.svg"
             alt=""
@@ -168,7 +200,7 @@ const NewsLetterPopupContainer = styled.div`
   width: 100%;
   position: fixed;
   bottom: ${props =>
-    props.isClosed ? "-255px" : props.isCollapsed ? "-177px" : "0"};
+    props.isClosed ? "-255px" : props.isCollapsed ? "-162px" : "0"};
   background-color: #fff;
   transition: all 0.5s linear;
   transition-delay: 0.4s;
