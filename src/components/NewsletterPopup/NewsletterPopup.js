@@ -17,22 +17,30 @@ const NewsletterSubscriptionStatus = {
 }
 
 export function NewsletterPopup() {
-  const isMounted = useRef(null)
+  const containerRef = useRef(null)
+  const contentRef = useRef(null)
 
   const [subscriptionStatus, setSubscriptionStatus] = useState(
     NewsletterSubscriptionStatus.default
   )
-  const [email, setEmail] = useState("")
-  const [isClosed, setClosed] = useState(true)
 
+  const [email, setEmail] = useState("")
+  const [isHidden, setHidden] = useState(true)
+  const [isClosed, setClosed] = useState(true)
   const [isCollapsed, setCollapsed] = useState(false)
+
+  const containerHeight = containerRef.current
+    ? containerRef.current.offsetHeight
+    : 0
+
+  const contentHeight = contentRef.current ? contentRef.current.offsetHeight : 0
 
   const toggleCollapse = useCallback(() => {
     setCollapsed(prevState => !prevState)
   }, [])
 
   const closePopup = useCallback(() => {
-    setClosed(true)
+    setHidden(true)
     localStorage.setItem(POPUP_VISIBLE_LOCAL_STORAGE_KEY, "false")
   }, [])
 
@@ -80,27 +88,27 @@ export function NewsletterPopup() {
   )
 
   useEffect(() => {
-    isMounted.current = true
-
-    return () => {
-      isMounted.current = false
-    }
-  }, [])
-
-  useEffect(() => {
     setTimeout(() => {
       const shouldPopupBeVisible = localStorage.getItem(
         POPUP_VISIBLE_LOCAL_STORAGE_KEY
       )
 
       if (shouldPopupBeVisible !== "false") {
+        setHidden(false)
         setClosed(false)
       }
     }, 5000)
   }, [])
 
   return (
-    <NewsLetterPopupContainer isClosed={isClosed} isCollapsed={isCollapsed}>
+    <NewsLetterPopupContainer
+      ref={containerRef}
+      isHidden={isHidden}
+      isClosed={isClosed}
+      isCollapsed={isCollapsed}
+      containerHeight={containerHeight}
+      contentHeight={contentHeight}
+    >
       <NewLetterPopupHeader isCollapsed={isCollapsed}>
         <div>
           <div>
@@ -128,7 +136,7 @@ export function NewsletterPopup() {
         </span>
       </NewLetterPopupHeader>
       <NewLetterPopupContent>
-        <div>
+        <div ref={contentRef}>
           <div>
             <p>
               Du willst regelmäßig die neuesten Hubert-Artikel erhalten? Dann
@@ -191,7 +199,13 @@ const NewsLetterPopupContainer = styled.div`
   width: 100%;
   position: fixed;
   bottom: ${props =>
-    props.isClosed ? "-255px" : props.isCollapsed ? "-162px" : "0"};
+    props.isHidden
+      ? "-500px"
+      : props.isClosed
+      ? `-${props.containerHeight + 10}px` // +10 to account for colapse button
+      : props.isCollapsed
+      ? `-${props.contentHeight}px`
+      : "0"};
   background-color: #fff;
   transition: all 0.5s linear;
   transition-delay: 0.4s;
