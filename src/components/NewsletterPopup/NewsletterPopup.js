@@ -85,7 +85,7 @@ export function NewsletterPopup() {
                 src="https://www.sorpetaler.de/wp-content/themes/hubert/assets/images/letter.svg"
                 alt=""
               />
-              <p>Do not miss anything!</p>
+              <p>NICHTS VERPASSEN!</p>
             </div>
           </div>
         </div>
@@ -106,8 +106,8 @@ export function NewsletterPopup() {
         <div>
           <div>
             <p>
-              Would you like to receive the latest Hubert articles on a regular
-              basis? Then register now for our newsletter.
+              Du willst regelmäßig die neuesten Hubert-Artikel erhalten? Dann
+              melde dich jetzt für unseren Newsletter an.
             </p>
           </div>
           <div>
@@ -127,7 +127,7 @@ export function NewsletterPopup() {
                     name="subscription_email"
                     id="mailjet_widget_email"
                     required="required"
-                    placeholder="* your@email.com"
+                    placeholder="* ihre@email.com"
                     value={email}
                     onChange={onEmailChange}
                   />
@@ -148,7 +148,7 @@ export function NewsletterPopup() {
                   name="widget_id"
                   value="wp_mailjet_subscribe_widget-2"
                 />
-                <input type="submit" value="to register" />
+                <input type="submit" value="Registrieren" />
               </form>
               <span>
                 {subscriptionStatus === NewsletterSubscriptionStatus.success &&
@@ -359,6 +359,7 @@ const NewLetterPopupContent = styled.div`
           font-size: 12px;
 
           > h3 {
+            margin-bottom: 0.5rem !important;
             color: white !important;
             vertical-align: inherit;
             font-size: 1.125rem;
